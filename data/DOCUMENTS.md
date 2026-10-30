@@ -30,3 +30,13 @@ or other official government address), then change its Status to
 - Save each file in data/raw/ and keep its original file name.
 - Write down for each document: the date you downloaded it and the page where
   the key facts are (we show the page number on every answer).
+## Download log
+
+### 1. PMFBY - Revised_Operational_Guidelines.pdf
+- File: data/raw/Revised_Operational_Guidelines.pdf
+- Downloaded: 30-10-2026
+- Source website: NEEDS HUMAN VERIFICATION (check browser download history, must be a .gov.in address)
+- Issuer and version date: NEEDS HUMAN VERIFICATION (read from page 1)
+- Key section: Detailed Procedure and Timelines for payment of localized claims
+- Key page: 3 per the table of contents, NEEDS HUMAN VERIFICATION against the viewer page number
+- Status: downloaded, not yet verified
