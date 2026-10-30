@@ -1,0 +1,21 @@
+# Secrets (never upload)
+.env
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Downloaded AI models and generated files
+*.pt
+*.bin
+*.gguf
+backend/models/
+backend/generated/
+chroma_db/
+
+# Editor and system files
+.vscode/
+.DS_Store
+Thumbs.db

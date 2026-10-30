@@ -1,36 +1,26 @@
-# MNIT_Hackathon
-# \# DHARA
+# DHARA
 
-# 
+A voice-first assistant that helps rural citizens in Hindi and Marathi.
+It answers questions about government schemes, crop advice and health
+from official documents, shows the source for every answer, and sends
+emergencies straight to the right phone number.
 
-# Multilingual voice assistant for rural citizens (Hackathon Domain 2, problem 2.1).
+## Team folders (nobody edits another person's folder)
 
-# 
+- backend/  : Voice & AI (Person A)
+- data/     : Data & Logic (Person B)
+- frontend/ : UI & Demo (Person C)
 
-# A villager asks in Hindi or Marathi and hears an answer from official documents, with the source shown. When the answer leads to an action, DHARA offers to prepare an application draft. A person always reviews the draft, and nothing is submitted anywhere.
+## Run the backend (stub version)
 
-# 
+1. cd backend
+2. python -m venv .venv
+3. .venv\Scripts\activate
+4. python -m pip install -r requirements.txt
+5. uvicorn app.main:app --reload
+6. Open http://127.0.0.1:8000/docs
 
-# \## Team folders (do not edit another person's folder)
+## Secrets
 
-# 
-
-# | Person | Role | Folder |
-
-# |---|---|---|
-
-# | A | Voice and AI | backend/ |
-
-# | B | Data and Logic | data/ |
-
-# | C | UI and Demo | frontend/ |
-
-# 
-
-# Shared files (README.md, .gitignore) are changed only by Person A.
-
-# 
-
-# \## Safety rules
-
-# 
+Copy .env.example to .env and put your own keys there.
+Never upload the .env file to GitHub.
