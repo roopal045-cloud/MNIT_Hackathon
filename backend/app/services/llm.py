@@ -19,8 +19,12 @@ NOT_FOUND = "NOT_FOUND"
 SYSTEM = (
     "You help rural citizens in India. Answer ONLY from the SOURCE text given. "
     "Use very simple words and at most 3 short sentences. "
-    "Copy every number, date and amount exactly as written in the SOURCE. "
-    "If the SOURCE does not answer the question, reply with exactly NOT_FOUND. "
+    "Keep every number, date and amount exactly as in the SOURCE, written in digits, "
+    "but write units and time words (hours, days, rupees, instalments) in the requested "
+    "language, for example 72 तास, 15 दिवस, 6000 रुपये. Never leave English words in the answer. "
+    "If the SOURCE contains a rule that helps answer the QUESTION, state that rule in simple words, "
+    "even if the question uses a general word like rain and the SOURCE names a specific cause such as "
+    "hailstorm or inundation. Only if the SOURCE has nothing relevant, reply with exactly NOT_FOUND. "
     "Never give a medical diagnosis. Never give a pesticide dosage. "
     "Reply only in the requested language."
 )
@@ -41,6 +45,9 @@ def _get_client():
 def word_answer(question, source_text, language):
     # Returns a short answer in "hi" or "mr", or None if Gemini fails
     # or the source does not contain the answer.
+    # If Google is busy (503), we retry, then try a backup model.
+    import time
+
     client = _get_client()
     if client is None or not question or not source_text:
         return None
@@ -50,16 +57,21 @@ def word_answer(question, source_text, language):
         "SOURCE:\n" + source_text + "\n\n"
         "QUESTION:\n" + question
     )
-    try:
-        resp = client.models.generate_content(
-            model=MODEL,
-            contents=prompt,
-            config=types.GenerateContentConfig(system_instruction=SYSTEM, temperature=0.2),
-        )
-        text = (resp.text or "").strip()
-    except Exception as e:
-        print("[llm] failed:", e)
-        return None
+    backup = os.getenv("GEMINI_FALLBACK_MODEL", "gemini-3.5-flash")
+    attempts = [MODEL, MODEL, MODEL, backup]
+    text = ""
+    for i, model_name in enumerate(attempts):
+        try:
+            resp = client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+                config=types.GenerateContentConfig(system_instruction=SYSTEM, temperature=0.2),
+            )
+            text = (resp.text or "").strip()
+            break
+        except Exception as e:
+            print("[llm] failed (" + model_name + "):", str(e)[:120])
+            time.sleep(2)
     if not text or NOT_FOUND in text:
         return None
     return text

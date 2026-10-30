@@ -1,6 +1,7 @@
 ﻿# backend/app/routers/ask.py
-# POST /ask: audio OR text in -> emergency check -> answer -> voice out.
-# The normal answer is still a PLACEHOLDER until rag.py + llm.py are connected.
+# POST /ask: audio OR text in -> emergency check -> search the documents ->
+# Gemini words the answer -> voice out. If nothing reliable is found, it refuses
+# politely and points to a human office.
 
 from typing import Optional
 
@@ -9,23 +10,30 @@ from fastapi import APIRouter, File, Form, UploadFile
 from app.models import AskResponse, Source
 from app.services.asr import transcribe
 from app.services.emergency import detect_emergency, get_emergency_reply
+from app.services.llm import word_answer
+from app.services.rag import search
 from app.services.tts import make_speech
 
 router = APIRouter()
 
-# PLACEHOLDER answers. NEEDS HUMAN VERIFICATION (72 hours, wording).
-ANSWER_HI = (
-    "बारिश से कपास की फसल खराब हो तो नुकसान के 72 घंटे के अंदर "
-    "फसल बीमा कंपनी या कृषि कार्यालय को सूचना दें। खेत की फोटो साथ रखें।"
-)
-ANSWER_MR = (
-    "पावसामुळे कापसाचे नुकसान झाल्यास 72 तासांच्या आत "
-    "पीक विमा कंपनीला किंवा कृषी कार्यालयाला कळवा. शेताचे फोटो जवळ ठेवा."
-)
 NO_INPUT_HI = "कृपया बोलकर या लिखकर सवाल पूछें।"
 NO_INPUT_MR = "कृपया बोलून किंवा लिहून प्रश्न विचारा."
 
+# Refusal: no phone numbers here until they are verified.
+REFUSE_HI = (
+    "इसका पक्का जवाब मुझे सरकारी दस्तावेज़ों में नहीं मिला। "
+    "कृपया अपने ग्राम पंचायत कार्यालय, CSC केंद्र या किसान कॉल सेंटर से पूछें।"
+)
+REFUSE_MR = (
+    "याचे खात्रीशीर उत्तर मला सरकारी कागदपत्रांत सापडले नाही. "
+    "कृपया तुमच्या ग्रामपंचायत कार्यालयात, CSC केंद्रात किंवा किसान कॉल सेंटरला विचारा."
+)
+
 LOW_DATA_MAX_CHARS = 200
+MIN_SCORE = 0.70  # below this the search result is too weak to trust
+
+# which application the "Shall I prepare your application?" offer is for
+OFFER_FOR_SCHEME = {"pmfby": "crop_damage", "pmmvy": "pregnancy_benefit"}
 
 
 def _short(text, limit):
@@ -38,6 +46,16 @@ def _short(text, limit):
         if i > 40:
             return cut[: i + 1]
     return cut
+
+
+def _refusal(transcript, lang, mode):
+    msg = REFUSE_MR if lang == "mr" else REFUSE_HI
+    spoken = _short(msg, LOW_DATA_MAX_CHARS) if mode == "low_data" else msg
+    return AskResponse(
+        transcript=transcript, language=lang, is_emergency=False, answer_text=msg,
+        audio_url=make_speech(spoken, lang), source=None, confidence=0.0,
+        refused=True, offer_application=None,
+    )
 
 
 @router.post("/ask", response_model=AskResponse)
@@ -82,16 +100,33 @@ async def ask(
             source=None, confidence=1.0, refused=False, offer_application=None,
         )
 
-    # 4. Normal answer (PLACEHOLDER until rag.py and llm.py are connected).
-    answer = ANSWER_MR if lang == "mr" else ANSWER_HI
+    # 4. Search the official documents.
+    try:
+        found = search(transcript, n=3)
+    except Exception as e:
+        print("[ask] search failed:", e)
+        return _refusal(transcript, lang, mode)
+
+    chunks = found["chunks"]
+    if not chunks or chunks[0]["score"] < MIN_SCORE:
+        return _refusal(transcript, lang, mode)
+
+    # 5. Gemini words the answer ONLY from the found text.
+    source_text = "\n\n".join(c["text"] for c in chunks)
+    answer = word_answer(transcript, source_text, lang)
+    if not answer:
+        return _refusal(transcript, lang, mode)
+
+    best = chunks[0]
     spoken = _short(answer, LOW_DATA_MAX_CHARS) if mode == "low_data" else answer
     return AskResponse(
         transcript=transcript, language=lang, is_emergency=False,
         answer_text=answer, audio_url=make_speech(spoken, lang),
         source=Source(
-            doc="PMFBY guidelines (PLACEHOLDER - NEEDS HUMAN VERIFICATION)",
-            page="NEEDS HUMAN VERIFICATION",
-            snippet="Localized calamity: inform within 72 hours (verify in real document)",
+            doc=best["doc"],
+            page=str(best["page"]),
+            snippet=best["text"][:200],
         ),
-        confidence=0.86, refused=False, offer_application="crop_damage",
+        confidence=min(1.0, best["score"]), refused=False,
+        offer_application=OFFER_FOR_SCHEME.get(found["scheme"]),
     )
