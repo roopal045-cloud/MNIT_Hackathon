@@ -291,7 +291,7 @@
       if (state.lastAnswer) speak(state.lastAnswer.answer_text, state.lastAnswer.audio_url);
     });
 
-    $("offer-btn").addEventListener("click", function () { alert(t().offerSoon); });
+    $("offer-btn").addEventListener("click", function () { if (window.DHARA_openDraft) window.DHARA_openDraft(); });
 
     function goHome() { stopSpeaking(); showScreen("home"); setMicState(""); }
     $("back-btn").addEventListener("click", goHome);
