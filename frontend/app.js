@@ -191,7 +191,7 @@
     } catch (err) {
       console.error(err);
       setMicState("");
-      $("status").textContent = "⚠️ " + err.message;
+      $("status").textContent = "! " + err.message;
     }
   }
 
@@ -229,18 +229,18 @@
   }
 
   // ---------- Language, role, low-data ----------
-  function renderLanguageButtons() {
-    const box = $("lang-switch");
-    box.innerHTML = "";
+   function renderLanguageButtons() {
+    const sel = $("lang-select");
+    sel.innerHTML = "";
     CONFIG.LANGUAGES.forEach(function (lang) {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "lang-btn" + (lang.code === state.language ? " active" : "");
-      b.textContent = lang.enabled ? lang.label : lang.label + " (जल्द)";
-      b.disabled = !lang.enabled;
-      b.addEventListener("click", function () { state.language = lang.code; applyLanguage(); });
-      box.appendChild(b);
+      const o = document.createElement("option");
+      o.value = lang.code;
+      o.textContent = lang.enabled ? lang.label : lang.label + " (जल्द)";
+      o.disabled = !lang.enabled;
+      o.selected = lang.code === state.language;
+      sel.appendChild(o);
     });
+    sel.onchange = function () { state.language = sel.value; applyLanguage(); };
   }
 
   function applyLanguage() {
