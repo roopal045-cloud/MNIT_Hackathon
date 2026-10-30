@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DHARA</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Splash screen: shows for 1.5 seconds, then fades away (CSS only) -->
+  <div id="splash" class="splash" aria-hidden="true">
+    <div class="splash-logo">DHARA</div>
+    <div class="splash-sub">धारा</div>
+    <div class="spinner"></div>
+  </div>
+
+  <div class="app">
+
+    <!-- Top bar: name, language, role, low-data -->
+    <header class="topbar">
+      <h1 class="logo">
+        <svg class="logo-drop" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true">
+          <path d="M12 2C12 2 5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13z" fill="#2f9fe0"/>
+        </svg>
+        DHARA
+      </h1>
+      <div id="lang-switch" class="lang-switch"></div>
+      <div class="toggles">
+        <button id="role-btn" class="toggle" type="button">
+          <span class="icon">👩‍🌾</span> <span id="role-label">किसान</span>
+        </button>
+        <button id="lowdata-btn" class="toggle" type="button">
+          <span class="icon">📶</span> <span id="lowdata-label">कम डेटा: बंद</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- HOME SCREEN -->
+    <main id="screen-home" class="screen">
+      <p id="home-title" class="home-title">बोलकर पूछिए</p>
+
+      <button id="mic-btn" class="mic-btn" type="button">
+        <span class="icon big">🎤</span>
+        <span id="mic-label">दबाकर बोलिए</span>
+      </button>
+      <p id="status" class="status" aria-live="polite"></p>
+
+      <div class="topics">
+        <button class="topic" type="button" data-topic="crops">
+          <span class="icon">🌾</span> <span data-i18n="crops">फसल</span>
+        </button>
+        <button class="topic" type="button" data-topic="schemes">
+          <span class="icon">📄</span> <span data-i18n="schemes">योजनाएँ</span>
+        </button>
+        <button class="topic" type="button" data-topic="health">
+          <span class="icon">❤️</span> <span data-i18n="health">स्वास्थ्य</span>
+        </button>
+      </div>
+    </main>
+
+    <!-- ANSWER SCREEN -->
+    <section id="screen-answer" class="screen hidden">
+      <div id="answer-card" class="card">
+        <p id="answer-transcript" class="transcript"></p>
+        <p id="answer-text" class="answer-text"></p>
+        <button id="play-btn" class="big-btn blue" type="button">
+          <span class="icon">🔊</span> <span id="play-label">सुनिए</span>
+        </button>
+        <p id="answer-source" class="source"></p>
+        <p id="answer-refused" class="refused hidden"></p>
+        <button id="offer-btn" class="big-btn green hidden" type="button">
+          <span class="icon">📝</span> <span id="offer-label">आवेदन तैयार करें</span>
+        </button>
+      </div>
+      <button id="back-btn" class="big-btn navy" type="button">
+        <span class="icon">⬅️</span> <span id="back-label">वापस</span>
+      </button>
+    </section>
+
+    <!-- EMERGENCY SCREEN (no chat text, only what is needed) -->
+    <section id="screen-emergency" class="screen hidden emergency">
+      <p id="em-message" class="em-message"></p>
+      <p id="em-number" class="em-number"></p>
+      <a id="em-call" class="call-btn" href="#">
+        <span class="icon big">📞</span> <span id="em-call-label">फ़ोन करें</span>
+      </a>
+      <div class="em-hospital">
+        <p id="em-hospital-name" class="em-hospital-name"></p>
+        <p id="em-hospital-dist" class="em-hospital-dist"></p>
+        <a id="em-maps" class="big-btn blue" href="#" target="_blank" rel="noopener">
+          <span class="icon">🗺️</span> <span id="em-maps-label">नक्शे में खोलें</span>
+        </a>
+      </div>
+      <p id="em-safety" class="em-safety"></p>
+      <button id="em-back" class="big-btn navy" type="button">
+        <span class="icon">⬅️</span> <span id="em-back-label">वापस</span>
+      </button>
+    </section>
+
+    <!-- Red SOS button, always visible -->
+    <button id="sos-btn" class="sos-btn" type="button">
+      <span class="icon">🆘</span> <span id="sos-label">आपातकाल</span>
+    </button>
+
+  </div>
+
+  <!-- Order matters: settings, fake backend, then the main code -->
+  <script src="config.js"></script>
+  <script src="mock-api.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
