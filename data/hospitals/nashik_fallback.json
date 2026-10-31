@@ -1,0 +1,30 @@
+{
+  "_note": "ALL ROWS BELOW ARE PLACEHOLDERS. Replace each with a real Nashik hospital or health centre. Coordinates and phone numbers NEED HUMAN VERIFICATION.",
+  "district": "Nashik",
+  "hospitals": [
+    {
+      "name": "PLACEHOLDER Hospital 1",
+      "type": "district_hospital",
+      "lat": 0.0,
+      "lon": 0.0,
+      "phone": "NEEDS HUMAN VERIFICATION",
+      "address": "PLACEHOLDER address"
+    },
+    {
+      "name": "PLACEHOLDER Hospital 2",
+      "type": "primary_health_centre",
+      "lat": 0.0,
+      "lon": 0.0,
+      "phone": "NEEDS HUMAN VERIFICATION",
+      "address": "PLACEHOLDER address"
+    },
+    {
+      "name": "PLACEHOLDER Hospital 3",
+      "type": "private_hospital",
+      "lat": 0.0,
+      "lon": 0.0,
+      "phone": "NEEDS HUMAN VERIFICATION",
+      "address": "PLACEHOLDER address"
+    }
+  ]
+}

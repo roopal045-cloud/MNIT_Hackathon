@@ -1,0 +1,29 @@
+{
+  "_note": "Schema plus 3 examples. Add up to 30 personas. expected_eligible must be checked by hand against the real document, not guessed.",
+  "personas": [
+    {
+      "id": "p01",
+      "description": "Sunita, 2 acres cotton, insured, rain damage yesterday",
+      "scheme": "pmfby_crop_damage",
+      "facts": {"state": "Maharashtra", "crop": "cotton", "land_acres": 2, "is_insured": true, "days_since_event": 1},
+      "expected_eligible": true,
+      "expected_reason": "PLACEHOLDER: verify against document"
+    },
+    {
+      "id": "p02",
+      "description": "Ramesh, 3 acres soybean, not insured",
+      "scheme": "pmfby_crop_damage",
+      "facts": {"state": "Maharashtra", "crop": "soybean", "land_acres": 3, "is_insured": false, "days_since_event": 1},
+      "expected_eligible": false,
+      "expected_reason": "PLACEHOLDER: not insured"
+    },
+    {
+      "id": "p03",
+      "description": "Kavita, 1 acre cotton, insured, reported after 10 days",
+      "scheme": "pmfby_crop_damage",
+      "facts": {"state": "Maharashtra", "crop": "cotton", "land_acres": 1, "is_insured": true, "days_since_event": 10},
+      "expected_eligible": false,
+      "expected_reason": "PLACEHOLDER: reported too late"
+    }
+  ]
+}

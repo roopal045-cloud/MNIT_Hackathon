@@ -1,0 +1,10 @@
+{
+  "_note": "Structure only. Add real phrases villagers say. Every phrase must trigger the expected type. Include some that should NOT trigger.",
+  "should_trigger": [
+    {"language": "hi", "phrase": "आग लग गई", "expected_type": "fire"},
+    {"language": "mr", "phrase": "साप चावला", "expected_type": "snakebite"}
+  ],
+  "should_not_trigger": [
+    {"language": "hi", "phrase": "PLACEHOLDER normal farming question"}
+  ]
+}

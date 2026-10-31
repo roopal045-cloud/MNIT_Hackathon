@@ -1,0 +1,19 @@
+{
+  "_note": "ALL VALUES BELOW ARE PLACEHOLDERS. Verify each condition against the PMFBY guidelines PDF in data/raw before real use.",
+  "scheme": "pmfby_crop_damage",
+  "title_en": "PMFBY localized calamity claim (rain damage)",
+  "source": {
+    "doc": "Revised_Operational_Guidelines.pdf",
+    "page": "NEEDS HUMAN VERIFICATION",
+    "snippet": "NEEDS HUMAN VERIFICATION"
+  },
+  "conditions": [
+    {"field": "state", "op": "==", "value": "Maharashtra", "reason_en": "Scheme applies to the notified state. PLACEHOLDER"},
+    {"field": "crop", "op": "in", "value": ["cotton", "soybean", "tur"], "reason_en": "Crop must be a notified crop. PLACEHOLDER"},
+    {"field": "land_acres", "op": ">", "value": 0, "reason_en": "Farmer must cultivate land. PLACEHOLDER"},
+    {"field": "is_insured", "op": "==", "value": true, "reason_en": "Crop must be insured under PMFBY. PLACEHOLDER"},
+    {"field": "days_since_event", "op": "<=", "value": 3, "reason_en": "Localized loss must be reported within the time limit (72 hours?). PLACEHOLDER"}
+  ],
+  "benefit_text_en": "PLACEHOLDER: describe the benefit exactly as the document states it.",
+  "last_verified": "NEEDS HUMAN VERIFICATION"
+}

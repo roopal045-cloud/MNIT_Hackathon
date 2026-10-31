@@ -40,3 +40,21 @@ or other official government address), then change its Status to
 - Key section: Detailed Procedure and Timelines for payment of localized claims
 - Key page: 3 per the table of contents, NEEDS HUMAN VERIFICATION against the viewer page number
 - Status: downloaded, not yet verified
+
+### 2. PMMVY - Mission_Shakti_Guidelines.pdf
+- File: data/raw/Mission_Shakti_Guidelines.pdf
+- Downloaded: 30-10-2026
+- Source website: Ministry of Women and Child Development (wcd.gov.in or missionshakti.wcd.gov.in), NEEDS HUMAN VERIFICATION which exact address (check browser download history)
+- Issuer and version date: Ministry of Women and Child Development, Government of India. Version date NEEDS HUMAN VERIFICATION (read from page 1)
+- Note: PMMVY now runs under Mission Shakti, so its rules are inside this larger guideline. The PMMVY procedure is an annexure near the end.
+- Key page: eligibility and amount, NEEDS HUMAN VERIFICATION (use the PDF viewer page number)
+- Status: downloaded, not yet verified
+
+### 3. PM-Kisan - RevisedPM-KISANOperationalGuidelines(English).pdf
+- File: data/raw/RevisedPM-KISANOperationalGuidelines(English).pdf
+- Downloaded: 30-10-2026
+- Source website: pmkisan.gov.in (official PM-Kisan portal), NEEDS HUMAN VERIFICATION of the exact page it was downloaded from
+- Issuer and version date: Ministry of Agriculture and Farmers Welfare, Government of India. Version date NEEDS HUMAN VERIFICATION (read from the document)
+- Key section: scheme definition, Rs 6000 per year benefit, definition of farmer's family, exclusions
+- Key page: eligibility and land-holding rules, NEEDS HUMAN VERIFICATION (use the PDF viewer page number)
+- Status: downloaded, first page checked, not yet fully verified
