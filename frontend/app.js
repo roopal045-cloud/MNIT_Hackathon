@@ -14,7 +14,7 @@
       source: "स्रोत", page: "पृष्ठ", km: "किमी",
       noMic: "माइक नहीं मिला। डेमो उत्तर दिखा रहा हूँ।",
       offerSoon: "आवेदन की सुविधा बाद के चरण में जुड़ेगी।",
-      cottonQ: "मेरी कपास की फसल बारिश से खराब हो गई"
+        cottonQ: "मेरी कपास की फसल बाढ़ या ओलावृष्टि से खराब हो गई"
     },
     mr: {
       title: "बोलून विचारा", mic: "दाबून बोला", micStop: "थांबवण्यासाठी दाबा",
@@ -27,7 +27,7 @@
       source: "स्रोत", page: "पान", km: "किमी",
       noMic: "माइक सापडला नाही. डेमो उत्तर दाखवत आहे.",
       offerSoon: "अर्जाची सुविधा नंतरच्या टप्प्यात जोडली जाईल.",
-      cottonQ: "माझ्या कापसाचे पावसाने नुकसान झाले आहे"
+            cottonQ: "माझ्या कापसाच्या पिकाचे पुरामुळे किंवा गारपिटीमुळे नुकसान झाले आहे"
     }
   };
 
@@ -132,10 +132,50 @@
   }
 
   // ---------- Showing results ----------
-  function showAnswer(data) {
+   // ASHA view: split the answer into short bullet lines.
+  function shortLines(text) {
+    return String(text || "")
+      .split(/\n+|(?<=[.।?!])\s+/)
+      .map(function (s) { return s.trim(); })
+      .filter(Boolean)
+      .map(function (s) { return "• " + s; })
+      .join("\n");
+  }
+
+  // Small "low data" badge in the top bar.
+  function updateBadges() {
+    let low = $("lowdata-badge");
+    if (!low) {
+      low = document.createElement("div");
+      low.id = "lowdata-badge";
+      low.className = "lowdata-badge";
+      document.querySelector(".topbar").appendChild(low);
+    }
+    low.textContent = t().lowOn;
+    low.classList.toggle("hidden", state.mode !== "low_data");
+  }
+  
+
+     function showAnswer(data) {
     state.lastAnswer = data;
     $("answer-transcript").textContent = data.transcript ? "“" + data.transcript + "”" : "";
-    $("answer-text").textContent = data.answer_text || "";
+
+    // Role label: visible only for the ASHA worker.
+    let badge = $("role-badge");
+    if (!badge) {
+      badge = document.createElement("div");
+      badge.id = "role-badge";
+      badge.className = "role-badge";
+      const tr = $("answer-transcript");
+      tr.parentNode.insertBefore(badge, tr);
+    }
+    badge.textContent = t().roleAsha;
+    badge.classList.toggle("hidden", state.role !== "asha");
+
+    // ASHA gets short bullet lines; the farmer gets the normal paragraph.
+    const asha = state.role === "asha";
+    $("answer-text").textContent = asha ? shortLines(data.answer_text) : (data.answer_text || "");
+    $("answer-text").classList.toggle("asha", asha);
 
     const refused = $("answer-refused");
     const source = $("answer-source");
@@ -158,17 +198,27 @@
     speak(data.answer_text, data.audio_url);
   }
 
+    function isRealHospital(h) {
+    if (!h || !h.name) return false;
+    const name = String(h.name).toUpperCase();
+    return name.indexOf("PLACEHOLDER") === -1 && name.indexOf("DEMO") === -1;
+  }
+
   function showEmergency(e) {
     $("em-message").textContent = e.message_text || "";
     $("em-number").textContent = e.number || "";
     $("em-call").setAttribute("href", e.call_uri || "tel:112");
 
-    const hospital = (e.hospitals && e.hospitals[0]) || null;
+    // Use the first hospital that is not a PLACEHOLDER or DEMO row.
+    const hospital = (e.hospitals || []).find(isRealHospital) || null;
     document.querySelector(".em-hospital").classList.toggle("hidden", !hospital);
     if (hospital) {
       $("em-hospital-name").textContent = hospital.name;
-      $("em-hospital-dist").textContent = hospital.distance_km + " " + t().km;
+      const hasDist = typeof hospital.distance_km === "number";
+      $("em-hospital-dist").textContent = hasDist ? hospital.distance_km + " " + t().km : "";
+      $("em-hospital-dist").classList.toggle("hidden", !hasDist);
       $("em-maps").setAttribute("href", hospital.maps_url || "#");
+      $("em-maps").classList.toggle("hidden", !hospital.maps_url);
     }
     $("em-safety").textContent = e.safety_line || "";
     showScreen("emergency");
@@ -261,6 +311,7 @@
     $("lowdata-label").textContent = state.mode === "low_data" ? s.lowOn : s.lowOff;
     renderLanguageButtons();
     setMicState(state.listening ? "listening" : "");
+        updateBadges();
   }
 
   // ---------- Wire up the buttons ----------
