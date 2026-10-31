@@ -397,29 +397,37 @@ html, body {
 .big-btn.navy  { background: linear-gradient(135deg, #17458f, #0b2a5b); }
 
 /* ---------- Emergency screen ---------- */
+/* ---------- Emergency screen ---------- */
 .emergency { background: #fff0f0; text-align: center; min-height: 70vh; }
-.em-message { font-size: 1.5rem; font-weight: 700; color: var(--red); margin: 8px 0; }
-.em-number  { font-size: 4.5rem; font-weight: 800; color: var(--red); margin: 0; line-height: 1.1; }
+.em-message { font-size: 1.6rem; font-weight: 700; color: var(--red); margin: 8px 0; }
+.em-number  {
+  font-size: clamp(3.5rem, 24vw, 7.5rem);
+  font-weight: 800;
+  color: var(--red);
+  margin: 0;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
 
 .call-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: 140px;
-  margin: 14px 0;
-  border-radius: var(--radius);
+  gap: 10px;
+  min-height: 200px;
+  margin: 16px 0;
+  border-radius: 24px;
   background: linear-gradient(145deg, #e84a4a, #b71c1c);
   color: #ffffff;
-  font-size: 1.7rem;
-  font-weight: 700;
+  font-size: 2.3rem;
+  font-weight: 800;
   text-decoration: none;
-  box-shadow: 0 12px 28px rgba(183, 28, 28, 0.4);
+  box-shadow: 0 14px 32px rgba(183, 28, 28, 0.45);
   transition: transform 0.2s ease, filter 0.2s ease;
 }
 
-.call-btn .ico { width: 48px; height: 48px; }
+.call-btn .ico { width: 72px; height: 72px; stroke-width: 2.4; }
 .call-btn:hover { transform: translateY(-2px); filter: brightness(1.06); }
 
 .em-hospital { background: #ffffff; border-radius: var(--radius); padding: 14px; margin: 14px 0; box-shadow: var(--shadow-sm); }
@@ -454,3 +462,29 @@ html, body {
 
 .sos-btn:hover { filter: brightness(1.1); box-shadow: 0 14px 30px rgba(183, 28, 28, 0.6); }
 .sos-btn:active { filter: brightness(0.95); }
+/* ---------- ASHA role label and low-data badge ---------- */
+.role-badge {
+  display: inline-block;
+  margin: 0 0 12px 0;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--green);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+#answer-text.asha { white-space: pre-line; line-height: 1.9; }
+
+.lowdata-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #e6f4fd;
+  border: 1.5px solid var(--sky);
+  color: var(--navy);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
