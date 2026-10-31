@@ -1,30 +1,30 @@
 {
-  "_note": "ALL ROWS BELOW ARE PLACEHOLDERS. Replace each with a real Nashik hospital or health centre. Coordinates and phone numbers NEED HUMAN VERIFICATION.",
+  "_note": "Names, addresses and coordinates copied from Google Maps by the team on 30-10-2026. Phone numbers are NEEDS HUMAN VERIFICATION.",
   "district": "Nashik",
   "hospitals": [
     {
-      "name": "PLACEHOLDER Hospital 1",
+      "name": "Civil Hospital",
       "type": "district_hospital",
-      "lat": 0.0,
-      "lon": 0.0,
+      "lat": 19.992683,
+      "lon": 73.771569,
       "phone": "NEEDS HUMAN VERIFICATION",
-      "address": "PLACEHOLDER address"
+      "address": "Trambakeshwar Rd, Police Staff Colony, Nashik, Maharashtra - 422002"
     },
     {
-      "name": "PLACEHOLDER Hospital 2",
-      "type": "primary_health_centre",
-      "lat": 0.0,
-      "lon": 0.0,
+      "name": "Regional Referral Service Hospital",
+      "type": "district_hospital",
+      "lat": 19.993717,
+      "lon": 73.785233,
       "phone": "NEEDS HUMAN VERIFICATION",
-      "address": "PLACEHOLDER address"
+      "address": "Shalimar, Nashik, Maharashtra - 422001"
     },
     {
-      "name": "PLACEHOLDER Hospital 3",
-      "type": "private_hospital",
-      "lat": 0.0,
-      "lon": 0.0,
+      "name": "BYTCO Hospital",
+      "type": "district_hospital",
+      "lat": 19.940989,
+      "lon": 73.824209,
       "phone": "NEEDS HUMAN VERIFICATION",
-      "address": "PLACEHOLDER address"
+      "address": "Near Muktidham, Rajwada Nagar, Deolali Gaon, Nashik, Maharashtra - 422101"
     }
   ]
 }
