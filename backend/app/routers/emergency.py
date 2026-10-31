@@ -1,34 +1,22 @@
 # backend/app/routers/emergency.py
-# POST /emergency - Phase 0 STUB: always returns the fire emergency.
-# Numbers and safety lines are NEEDS HUMAN VERIFICATION.
+# POST /emergency - real version. Pre-written reply, no AI, no document search.
+# Numbers and safety lines come from data/emergency/emergency.json
+# (NEEDS HUMAN VERIFICATION until VERIFICATION.md is confirmed).
 
 from fastapi import APIRouter
 
-from app.models import EmergencyRequest, EmergencyResponse, Hospital
+from app.models import EmergencyRequest, EmergencyResponse
+from app.services.emergency import get_emergency_reply
 
 router = APIRouter()
-
-MESSAGE_HI = "आग लगी है! तुरंत 101 (दमकल) या 112 पर कॉल करें।"
-MESSAGE_MR = "आग लागली आहे! लगेच 101 (अग्निशमन) किंवा 112 वर कॉल करा."
-SAFETY_HI = "तुरंत सुरक्षित जगह पर बाहर निकलें।"  # NEEDS HUMAN VERIFICATION
-SAFETY_MR = "लगेच सुरक्षित जागी बाहेर पडा."  # NEEDS HUMAN VERIFICATION
 
 
 @router.post("/emergency", response_model=EmergencyResponse)
 async def emergency(req: EmergencyRequest):
-    is_marathi = req.language == "mr"
-    return EmergencyResponse(
-        type="fire",
-        number="101",  # NEEDS HUMAN VERIFICATION (112 is the unified number)
-        call_uri="tel:101",
-        message_text=MESSAGE_MR if is_marathi else MESSAGE_HI,
-        audio_url=None,
-        safety_line=SAFETY_MR if is_marathi else SAFETY_HI,
-        hospitals=[
-            Hospital(
-                name="PLACEHOLDER - Civil Hospital, Nashik",
-                distance_km=3.2,
-                maps_url="https://www.google.com/maps/search/?api=1&query=Civil+Hospital+Nashik",
-            )
-        ],
+    reply = get_emergency_reply(
+        type_=req.type,
+        language=req.language,
+        lat=req.lat,
+        lon=req.lon,
     )
+    return EmergencyResponse(**reply)

@@ -1,4 +1,4 @@
-﻿# backend/app/routers/ask.py
+# backend/app/routers/ask.py
 # POST /ask: audio OR text in -> emergency check -> search the documents ->
 # Gemini words the answer -> voice out. If nothing reliable is found, it refuses
 # politely and points to a human office.
@@ -47,6 +47,14 @@ def _short(text, limit):
             return cut[: i + 1]
     return cut
 
+
+def _best_snippet(text, key="72", limit=220):
+    # the sentence that contains the key number, otherwise the start of the chunk
+    for part in text.replace("\n", " ").split(". "):
+        if key in part:
+            part = part.strip()
+            return part if len(part) <= limit else part[:limit].rsplit(" ", 1)[0] + "..."
+    return text[:200]
 
 def _refusal(transcript, lang, mode):
     msg = REFUSE_MR if lang == "mr" else REFUSE_HI
@@ -113,7 +121,7 @@ async def ask(
 
     # 5. Gemini words the answer ONLY from the found text.
     source_text = "\n\n".join(c["text"] for c in chunks)
-    answer = word_answer(transcript, source_text, lang)
+    answer = word_answer(transcript, source_text, lang, role)
     if not answer:
         return _refusal(transcript, lang, mode)
 
@@ -125,7 +133,7 @@ async def ask(
         source=Source(
             doc=best["doc"],
             page=str(best["page"]),
-            snippet=best["text"][:200],
+            snippet=_best_snippet(best["text"]),
         ),
         confidence=min(1.0, best["score"]), refused=False,
         offer_application=OFFER_FOR_SCHEME.get(found["scheme"]),

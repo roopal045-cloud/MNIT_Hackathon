@@ -1,4 +1,4 @@
-﻿# backend/app/services/llm.py - empty for now, filled in during Phase 1
+# backend/app/services/llm.py - empty for now, filled in during Phase 1
 # backend/app/services/llm.py
 # Gemini is used ONLY to word an answer from source text we give it.
 # It never decides eligibility and never answers from its own memory.
@@ -42,7 +42,7 @@ def _get_client():
     return _client
 
 
-def word_answer(question, source_text, language):
+def word_answer(question, source_text, language, role="farmer"):
     # Returns a short answer in "hi" or "mr", or None if Gemini fails
     # or the source does not contain the answer.
     # If Google is busy (503), we retry, then try a backup model.
@@ -57,6 +57,8 @@ def word_answer(question, source_text, language):
         "SOURCE:\n" + source_text + "\n\n"
         "QUESTION:\n" + question
     )
+    if role == "asha":
+        prompt += "\n\nFORMAT: The reader is an ASHA health worker. Answer in 2 or 3 very short lines. One short sentence per line. Put each sentence on its own line. No bullet symbols."
     backup = os.getenv("GEMINI_FALLBACK_MODEL", "gemini-3.5-flash")
     attempts = [MODEL, MODEL, MODEL, backup]
     text = ""
