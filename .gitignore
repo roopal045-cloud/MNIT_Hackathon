@@ -19,3 +19,4 @@ chroma_db/
 .vscode/
 .DS_Store
 Thumbs.db
+backend/test_audio/

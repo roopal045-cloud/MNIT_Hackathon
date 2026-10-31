@@ -1,4 +1,4 @@
-# backend/app/services/tts.py
+﻿# backend/app/services/tts.py
 # Text to speech (voice out) for Hindi and Marathi, using gTTS (needs internet).
 
 import hashlib
@@ -28,7 +28,8 @@ def make_speech(text, language):
     if not path.exists():
         try:
             gTTS(text=text, lang=lang).save(str(path))
-        except Exception:
+        except Exception as e:
+            print('[tts] failed:', e)
             # No internet or the service is down: answer without audio.
             return None
 
