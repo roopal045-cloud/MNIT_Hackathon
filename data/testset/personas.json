@@ -1,29 +1,25 @@
 {
-  "_note": "Schema plus 3 examples. Add up to 30 personas. expected_eligible must be checked by hand against the real document, not guessed.",
+  "_note": "Expected results checked by hand against Revised_Operational_Guidelines.pdf (para 5.1.4, 21.5) on 30-10-2026. Sunita's cause is set to inundation: her demo wording NEEDS HUMAN VERIFICATION.",
   "personas": [
-    {
-      "id": "p01",
-      "description": "Sunita, 2 acres cotton, insured, rain damage yesterday",
-      "scheme": "pmfby_crop_damage",
-      "facts": {"state": "Maharashtra", "crop": "cotton", "land_acres": 2, "is_insured": true, "days_since_event": 1},
-      "expected_eligible": true,
-      "expected_reason": "PLACEHOLDER: verify against document"
-    },
-    {
-      "id": "p02",
-      "description": "Ramesh, 3 acres soybean, not insured",
-      "scheme": "pmfby_crop_damage",
-      "facts": {"state": "Maharashtra", "crop": "soybean", "land_acres": 3, "is_insured": false, "days_since_event": 1},
-      "expected_eligible": false,
-      "expected_reason": "PLACEHOLDER: not insured"
-    },
-    {
-      "id": "p03",
-      "description": "Kavita, 1 acre cotton, insured, reported after 10 days",
-      "scheme": "pmfby_crop_damage",
-      "facts": {"state": "Maharashtra", "crop": "cotton", "land_acres": 1, "is_insured": true, "days_since_event": 10},
-      "expected_eligible": false,
-      "expected_reason": "PLACEHOLDER: reported too late"
-    }
+    {"id": "p01", "description": "Sunita, 2 acres cotton, insured, field flooded (inundation) yesterday, premium paid",
+     "scheme": "pmfby_crop_damage",
+     "facts": {"state": "Maharashtra", "crop": "cotton", "land_acres": 2, "is_insured": true, "premium_paid_before_event": true, "cause": "inundation", "days_since_event": 1},
+     "expected_eligible": true, "expected_reason": "All conditions met (para 21.5)"},
+    {"id": "p02", "description": "Ramesh, 3 acres soybean, not insured, hailstorm yesterday",
+     "scheme": "pmfby_crop_damage",
+     "facts": {"state": "Maharashtra", "crop": "soybean", "land_acres": 3, "is_insured": false, "premium_paid_before_event": false, "cause": "hailstorm", "days_since_event": 1},
+     "expected_eligible": false, "expected_reason": "Not insured (para 21.5.2.1)"},
+    {"id": "p03", "description": "Kavita, 1 acre cotton, insured, hailstorm, reported after 10 days",
+     "scheme": "pmfby_crop_damage",
+     "facts": {"state": "Maharashtra", "crop": "cotton", "land_acres": 1, "is_insured": true, "premium_paid_before_event": true, "cause": "hailstorm", "days_since_event": 10},
+     "expected_eligible": false, "expected_reason": "Reported after 72 hours (para 21.5.4.1)"},
+    {"id": "p04", "description": "Meena, 2 acres cotton, insured, ordinary heavy rain, reported in 1 day",
+     "scheme": "pmfby_crop_damage",
+     "facts": {"state": "Maharashtra", "crop": "cotton", "land_acres": 2, "is_insured": true, "premium_paid_before_event": true, "cause": "rain", "days_since_event": 1},
+     "expected_eligible": false, "expected_reason": "Plain rain is not a localized cause (para 5.1.4)"},
+    {"id": "p05", "description": "Dinesh, 2 acres tur, insured, hailstorm, premium paid after the event",
+     "scheme": "pmfby_crop_damage",
+     "facts": {"state": "Maharashtra", "crop": "tur", "land_acres": 2, "is_insured": true, "premium_paid_before_event": false, "cause": "hailstorm", "days_since_event": 1},
+     "expected_eligible": false, "expected_reason": "Premium not paid before the event (para 21.5.2.3)"}
   ]
 }

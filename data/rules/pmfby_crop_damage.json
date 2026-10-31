@@ -1,19 +1,21 @@
 {
-  "_note": "ALL VALUES BELOW ARE PLACEHOLDERS. Verify each condition against the PMFBY guidelines PDF in data/raw before real use.",
+  "_note": "Values read against Revised_Operational_Guidelines.pdf on 30-10-2026. Items marked NEEDS HUMAN VERIFICATION are not confirmed by the document.",
   "scheme": "pmfby_crop_damage",
   "title_en": "PMFBY localized calamity claim (rain damage)",
   "source": {
     "doc": "Revised_Operational_Guidelines.pdf",
-    "page": "NEEDS HUMAN VERIFICATION",
-    "snippet": "NEEDS HUMAN VERIFICATION"
+    "page": "about 50-53 (para 21.5 and Table 11), NEEDS HUMAN VERIFICATION against the viewer page number",
+    "snippet": "Immediate intimation (within 72 hours) by the insured farmer"
   },
   "conditions": [
-    {"field": "state", "op": "==", "value": "Maharashtra", "reason_en": "Scheme applies to the notified state. PLACEHOLDER"},
-    {"field": "crop", "op": "in", "value": ["cotton", "soybean", "tur"], "reason_en": "Crop must be a notified crop. PLACEHOLDER"},
-    {"field": "land_acres", "op": ">", "value": 0, "reason_en": "Farmer must cultivate land. PLACEHOLDER"},
-    {"field": "is_insured", "op": "==", "value": true, "reason_en": "Crop must be insured under PMFBY. PLACEHOLDER"},
-    {"field": "days_since_event", "op": "<=", "value": 3, "reason_en": "Localized loss must be reported within the time limit (72 hours?). PLACEHOLDER"}
+    {"field": "state", "op": "==", "value": "Maharashtra", "reason_en": "The state notification decides where the scheme applies. NEEDS HUMAN VERIFICATION of the Maharashtra notification."},
+    {"field": "crop", "op": "in", "value": ["cotton", "soybean", "tur"], "reason_en": "Only notified crops are covered. The crop list is a PLACEHOLDER, NEEDS HUMAN VERIFICATION against the state notification."},
+    {"field": "land_acres", "op": ">", "value": 0, "reason_en": "Farmer must have insurable interest in the land. The document sets no land-size limit (para 3.1)."},
+    {"field": "is_insured", "op": "==", "value": true, "reason_en": "The crop must be insured under PMFBY (para 21.5.2.1)."},
+    {"field": "premium_paid_before_event", "op": "==", "value": true, "reason_en": "Premium must be paid or debited before the damage happened (para 21.5.2.3)."},
+    {"field": "cause", "op": "in", "value": ["hailstorm", "landslide", "inundation", "cloud_burst", "lightning_fire"], "reason_en": "Localized claims cover only these causes (para 5.1.4). Inundation needs visible crop damage, not just water logging (Table 11 note)."},
+    {"field": "days_since_event", "op": "<=", "value": 3, "reason_en": "The farmer must report the loss within 72 hours (para 21.5.4.1)."}
   ],
-  "benefit_text_en": "PLACEHOLDER: describe the benefit exactly as the document states it.",
-  "last_verified": "NEEDS HUMAN VERIFICATION"
+  "benefit_text_en": "Payout is limited to the proportionate sum insured of the damaged crop area and is based on the cost of inputs spent up to the event (para 21.5.2.2). The company should pay within 15 days of the loss assessment (Table 11). Exact amount: NEEDS HUMAN VERIFICATION with the insurer.",
+  "last_verified": "30-10-2026 against the PDF text. Whether this is the newest PMFBY version: NEEDS HUMAN VERIFICATION"
 }

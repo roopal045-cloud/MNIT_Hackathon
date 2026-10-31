@@ -44,9 +44,13 @@ def check_eligibility(scheme, facts):
 
 
 if __name__ == "__main__":
-    sunita = {"state": "Maharashtra", "crop": "cotton", "land_acres": 2,
-              "is_insured": True, "days_since_event": 1}
-    late = {"state": "Maharashtra", "crop": "cotton", "land_acres": 2,
-            "is_insured": True, "days_since_event": 10}
-    print("Sunita:", json.dumps(check_eligibility("pmfby_crop_damage", sunita), indent=2, ensure_ascii=False))
-    print("Late:", json.dumps(check_eligibility("pmfby_crop_damage", late), indent=2, ensure_ascii=False))
+    base = {"state": "Maharashtra", "crop": "cotton", "land_acres": 2,
+            "is_insured": True, "premium_paid_before_event": True}
+    cases = {
+        "Sunita (hailstorm, 1 day)": dict(base, cause="hailstorm", days_since_event=1),
+        "Late (hailstorm, 10 days)": dict(base, cause="hailstorm", days_since_event=10),
+        "Rain only (not a covered cause)": dict(base, cause="rain", days_since_event=1),
+    }
+    for name, facts in cases.items():
+        r = check_eligibility("pmfby_crop_damage", facts)
+        print(name, "->", "ELIGIBLE" if r["eligible"] else "NOT ELIGIBLE")
